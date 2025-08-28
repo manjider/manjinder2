@@ -1,1010 +1,671 @@
-/*
-
-Tooplate 2142 Cloud Sync
-
-https://www.tooplate.com/view/2142-cloud-sync
-
-*/
-
-@charset "utf-8";
-/* CSS Document */
-
- * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #10b981;
-            --background: #0f172a;
-            --surface: #1e293b;
-            --text: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --accent: #f472b6;
-            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text);
-        }
-
-        .cta-button {
-            background: var(--primary);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .cta-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .mobile-menu-toggle span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: var(--text);
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .mobile-menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .mobile-menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-            animation: slideDown 0.3s ease;
-        }
-
-        .mobile-nav.active {
-            display: block;
-        }
-
-        .mobile-nav a {
-            display: block;
-            color: var(--text);
-            text-decoration: none;
-            padding: 1rem 0;
-            font-size: 1.1rem;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .mobile-nav a:hover {
-            color: var(--primary);
-            transform: translateX(10px);
-        }
-
-        .mobile-nav .cta-button {
-            display: inline-block;
-            margin-top: 1rem;
-            width: 100%;
-            text-align: center;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 8rem 2rem 4rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            animation: pulse 20s ease-in-out infinite;
-        }
-
-        /* Rotating Background Images */
-        .hero-backgrounds {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: opacity 2s ease-in-out;
-        }
-
-        .hero-bg.active {
-            opacity: 1;
-        }
-
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9));
-        }
-
-        .hero-bg:nth-child(1) {
-            background-image: url('images/tooplate-cloud-sync-bg01.jpg');
-        }
-
-        .hero-bg:nth-child(2) {
-            background-image: url('images/tooplate-cloud-sync-bg02.jpg');
-        }
-
-        .hero-bg:nth-child(3) {
-            background-image: url('images/tooplate-cloud-sync-bg03.jpg');
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.3; }
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Features Section */
-        .features {
-            padding: 4rem 2rem;
-            background: var(--surface);
-        }
-
-        .features-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .features-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .features-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .features-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .features-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 3rem;
-        }
-
-        /* Two Column Features */
-        .features-two-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .feature-card-large {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            padding: 2.5rem;
-            border-radius: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card-large:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-        }
-
-        .feature-card-large h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-checklist {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
-        .feature-checklist li {
-            padding: 0.5rem 0;
-            color: var(--text-secondary);
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .feature-checklist li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        /* Four Column Features */
-        .features-four-col {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-        }
-
-        .feature-card-small {
-            background: rgba(30, 41, 59, 0.3);
-            border: 1px solid rgba(99, 102, 241, 0.1);
-            padding: 2rem;
-            border-radius: 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card-small:hover {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .feature-icon-small {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-
-        .feature-card-small h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card-small p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Pricing Section */
-        .pricing {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .pricing-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-calculator {
-            background: var(--surface);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .slider-container {
-            margin-bottom: 2rem;
-        }
-
-        .slider-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .slider {
-            width: 100%;
-            height: 6px;
-            background: rgba(99, 102, 241, 0.2);
-            border-radius: 3px;
-            outline: none;
-            -webkit-appearance: none;
-            position: relative;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
-            cursor: pointer;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-        }
-
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .pricing-card {
-            background: rgba(30, 41, 59, 0.5);
-            border: 2px solid transparent;
-            padding: 2rem;
-            border-radius: 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pricing-card.popular {
-            border-color: var(--primary);
-        }
-
-        .pricing-card.popular::before {
-            content: 'Most Popular';
-            position: absolute;
-            top: 1rem;
-            right: -2rem;
-            background: var(--primary);
-            color: white;
-            padding: 0.25rem 3rem;
-            transform: rotate(45deg);
-            font-size: 0.75rem;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .plan-name {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .plan-price {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .plan-price span {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .plan-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .plan-features li {
-            padding: 0.5rem 0;
-            color: var(--text-secondary);
-        }
-
-        .plan-features li::before {
-            content: '✓ ';
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        /* Animated Background */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            background: rgba(99, 102, 241, 0.1);
-            filter: blur(40px);
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            top: 60%;
-            right: 10%;
-            animation-delay: 5s;
-        }
-
-        .shape:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            bottom: 10%;
-            left: 30%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
-            .pricing-cards { grid-template-columns: 1fr; }
-        }
-
-        /* About Section */
-        .about {
-            padding: 4rem 2rem;
-            background: var(--surface);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -20%;
-            width: 40%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-        }
-
-        .about-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .about-content {
-            text-align: center;
-        }
-
-        .about-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .about-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: rgba(99, 102, 241, 0.1);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            background: rgba(99, 102, 241, 0.15);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .about-text {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: left;
-        }
-
-        .about-text p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .contact-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .contact-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-
-        /* Contact Form Styling */
-        .contact-form-wrapper {
-            background: var(--surface);
-            padding: 2.5rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .form-header {
-            margin-bottom: 2rem;
-        }
-
-        .form-header h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-header p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.875rem;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 0.5rem;
-            color: var(--text);
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.8);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 0.5rem;
-        }
-
-        .submit-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Contact Info Styling */
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .quick-contact {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .quick-contact h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-methods {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .contact-method {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 0.75rem;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .contact-method:hover {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: var(--primary);
-            transform: translateX(5px);
-        }
-
-        .method-icon {
-            font-size: 1.5rem;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 0.5rem;
-        }
-
-        .method-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .method-details strong {
-            color: var(--text);
-            font-size: 0.95rem;
-        }
-
-        .method-details span {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .office-locations {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .office-locations h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .location-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .location {
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 0.75rem;
-            border-left: 3px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .location:hover {
-            background: rgba(15, 23, 42, 0.7);
-            transform: translateX(5px);
-        }
-
-        .location strong {
-            color: var(--text);
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .location p {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--background);
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-            padding: 3rem 2rem 1rem;
-            margin-top: 4rem;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 3fr;
-            gap: 4rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-brand p {
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .footer-links {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .footer-column h4 {
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .footer-column a {
-            display: block;
-            color: var(--text-secondary);
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: var(--primary);
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.1);
-            color: var(--text-secondary);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .social-links a, .footer a, p a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .social-links a:hover, .footer a:hover, p a:hover {
-            color: var(--primary);
-        }
-
-        /* Responsive Updates */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
-            .mobile-menu-toggle { display: flex; }
-            .pricing-cards { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .contact-content { grid-template-columns: 1fr; gap: 2rem; }
-            .form-row { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
-            .footer-links { grid-template-columns: 1fr; }
-            .footer-bottom { flex-direction: column; gap: 1rem; }
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Barista Cafe HTML CSS Template</title>
+
+        <!-- CSS FILES -->                
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,400;0,600;0,700;1,200;1,700&display=swap" rel="stylesheet">
             
-            /* Features Mobile */
-            .feature-hero { 
-                grid-template-columns: 1fr; 
-                padding: 2rem;
-                text-align: center;
-            }
-            .feature-hero-visual { display: none; }
-            .features-two-col { grid-template-columns: 1fr; }
-            .features-four-col { 
-                grid-template-columns: 1fr; 
-            }
-            .feature-stats { justify-content: center; }
-        }
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/vegas.min.css" rel="stylesheet">
+
+        <link href="css/tooplate-barista.css" rel="stylesheet">
+        
+<!--
+
+Tooplate 2137 Barista Cafe
+
+https://www.tooplate.com/view/2137-barista-cafe
+
+Bootstrap 5 HTML CSS Template
+
+-->
+    </head>
+    
+    <body>
+                
+            <main>
+                <nav class="navbar navbar-expand-lg">                
+                    <div class="container">
+                        <a class="navbar-brand d-flex align-items-center" href="index.html">
+                            <img src="images/coffee-beans.png" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
+                            Barista
+                        </a>
+        
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+        
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-lg-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link click-scroll" href="#section_1">Home</a>
+                                </li>
+        
+                                <li class="nav-item">
+                                    <a class="nav-link click-scroll" href="#section_2">About</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link click-scroll" href="#section_3">Our Menu</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link click-scroll" href="#section_4">Reviews</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link click-scroll" href="#section_5">Contact</a>
+                                </li>
+                            </ul>
+
+                            <div class="ms-lg-3">
+                                <a class="btn custom-btn custom-border-btn" href="reservation.html">
+                                    Reservation
+                                    <i class="bi-arrow-up-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+
+                <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+
+                    <div class="container">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6 col-12 mx-auto">
+                                <em class="small-text">welcome to Barista.co</em>
+                                
+                                <h1>Cafe Klang</h1>
+
+                                <p class="text-white mb-4 pb-lg-2">
+                                    your <em>favourite</em> coffee daily lives.
+                                </p>
+
+                                <a class="btn custom-btn custom-border-btn smoothscroll me-3" href="#section_2">
+                                    Our Story
+                                </a>
+
+                                <a class="btn custom-btn smoothscroll me-2 mb-2" href="#section_3"><strong>Check Menu</strong></a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="hero-slides"></div>
+                </section>
+
+
+                <section class="about-section section-padding" id="section_2">
+                    <div class="section-overlay"></div>
+                    <div class="container">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6 col-12">
+                                <div class="ratio ratio-1x1">
+                                    <video autoplay="" loop="" muted="" class="custom-video" poster="">
+                                        <source src="videos/pexels-mike-jones-9046237.mp4" type="video/mp4">
+
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <div class="about-video-info d-flex flex-column">
+                                        <h4 class="mt-auto">We Started Since 2009.</h4>
+
+                                        <h4>Best Cafe in Klang.</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5 col-12 mt-4 mt-lg-0 mx-auto">
+                                <em class="text-white">Barista.co</em>
+
+                                <h2 class="text-white mb-3">Cafe KL</h2>
+
+                                <p class="text-white">The café had been in the town for as long as anyone could remember, and it had become a beloved institution among the locals.</p>
+
+                                <p class="text-white">The café was run by a friendly and hospitable couple, Mr. and Mrs. Johnson. Barista Cafe is free Bootstrap 5 HTML layout provided by <a rel="nofollow" href="https://www.tooplate.com" target="_blank">Tooplate</a>.</p>
+
+                                <a href="#barista-team" class="smoothscroll btn custom-btn custom-border-btn mt-3 mb-4">Meet Baristas</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="barista-section section-padding section-bg" id="barista-team">
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <div class="col-lg-12 col-12 text-center mb-4 pb-lg-2">
+                                <em class="text-white">Creative Baristas</em>
+
+                                <h2 class="text-white">Meet People</h2>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                <div class="team-block-wrap">
+                                    <div class="team-block-info d-flex flex-column">
+                                        <div class="d-flex mt-auto mb-3">
+                                            <h4 class="text-white mb-0">Steve</h4>
+
+                                            <p class="badge ms-4"><em>Boss</em></p>
+                                        </div>
+
+                                        <p class="text-white mb-0">your favourite coffee daily lives tempor.</p>
+                                    </div>
+
+                                    <div class="team-block-image-wrap">
+                                        <img src="images/team/portrait-elegant-old-man-wearing-suit.jpg" class="team-block-image img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                <div class="team-block-wrap">
+                                    <div class="team-block-info d-flex flex-column">
+                                        <div class="d-flex mt-auto mb-3">
+                                            <h4 class="text-white mb-0">Sandra</h4>
+
+                                            <p class="badge ms-4"><em>Manager</em></p>
+                                        </div>
+
+                                        <p class="text-white mb-0">your favourite coffee daily lives.</p>
+                                    </div>
+
+                                    <div class="team-block-image-wrap">
+                                        <img src="images/team/cute-korean-barista-girl-pouring-coffee-prepare-filter-batch-brew-pour-working-cafe.jpg" class="team-block-image img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                                <div class="team-block-wrap">
+                                    <div class="team-block-info d-flex flex-column">
+                                        <div class="d-flex mt-auto mb-3">
+                                            <h4 class="text-white mb-0">Jackson</h4>
+
+                                            <p class="badge ms-4"><em>Senior</em></p>
+                                        </div>
+
+                                        <p class="text-white mb-0">your favourite coffee daily lives.</p>
+                                    </div>
+
+                                    <div class="team-block-image-wrap">
+                                        <img src="images/team/small-business-owner-drinking-coffee.jpg" class="team-block-image img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="team-block-wrap">
+                                    <div class="team-block-info d-flex flex-column">
+                                        <div class="d-flex mt-auto mb-3">
+                                            <h4 class="text-white mb-0">Michelle</h4>
+
+                                            <p class="badge ms-4"><em>Barista</em></p>
+                                        </div>
+
+                                        <p class="text-white mb-0">your favourite coffee daily consectetur.</p>
+                                    </div>
+
+                                    <div class="team-block-image-wrap">
+                                        <img src="images/team/smiley-business-woman-working-cashier.jpg" class="team-block-image img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="menu-section section-padding" id="section_3">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-6 col-12 mb-4 mb-lg-0">
+                                <div class="menu-block-wrap">
+                                    <div class="text-center mb-4 pb-lg-2">
+                                        <em class="text-white">Delicious Menu</em>
+                                        <h4 class="text-white">Breakfast</h4>
+                                    </div>
+
+                                    <div class="menu-block">
+                                        <div class="d-flex">
+                                            <h6>Pancakes</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$12.50</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Fresh brewed coffee and steamed milk</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block my-4">
+                                        <div class="d-flex">
+                                            <h6>
+                                                Toasted Waffle
+                                            </h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="text-white ms-auto"><del>$16.50</del></strong>
+
+                                            <strong class="ms-2">$12.00</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Brewed coffee and steamed milk</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block">
+                                        <div class="d-flex">
+                                            <h6>Fried Chips
+                                                <span class="badge ms-3">Recommend</span>
+                                            </h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$15.0</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Rich Milk and Foam</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block my-4">
+                                        <div class="d-flex">
+                                            <h6>Pancakes</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$12.50</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Fresh brewed coffee and steamed milk</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block">
+                                        <div class="d-flex">
+                                            <h6>Banana Cakes</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$18.0</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Rich Milk and Foam</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-12">
+                                <div class="menu-block-wrap">
+                                    <div class="text-center mb-4 pb-lg-2">
+                                        <em class="text-white">Favourite Menu</em>
+                                        <h4 class="text-white">Coffee</h4>
+                                    </div>
+
+                                    <div class="menu-block">
+                                        <div class="d-flex">
+                                            <h6>Latte</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="text-white ms-auto"><del>$12.50</del></strong>
+
+                                            <strong class="ms-2">$7.50</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Fresh brewed coffee and steamed milk</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block my-4">
+                                        <div class="d-flex">
+                                            <h6>
+                                                White Coffee
+                                                <span class="badge ms-3">Recommend</span>
+                                            </h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$5.90</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Brewed coffee and steamed milk</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block">
+                                        <div class="d-flex">
+                                            <h6>Chocolate Milk</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$5.50</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Rich Milk and Foam</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block my-4">
+                                        <div class="d-flex">
+                                            <h6>Greentea</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$7.50</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Fresh brewed coffee and steamed milk</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-block">
+                                        <div class="d-flex">
+                                            <h6>Dark Chocolate</h6>
+                                        
+                                            <span class="underline"></span>
+
+                                            <strong class="ms-auto">$7.25</strong>
+                                        </div>
+
+                                        <div class="border-top mt-2 pt-2">
+                                            <small>Rich Milk and Foam</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="reviews-section section-padding section-bg" id="section_4">
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <div class="col-lg-12 col-12 text-center mb-4 pb-lg-2">
+                                <em class="text-white">Reviews by Customers</em>
+
+                                <h2 class="text-white">Testimonials</h2>
+                            </div>
+
+                            <div class="timeline">
+                                <div class="timeline-container timeline-container-left">
+                                    <div class="timeline-content">
+                                        <div class="reviews-block">
+                                            <div class="reviews-block-image-wrap d-flex align-items-center">
+                                                <img src="images/reviews/young-woman-with-round-glasses-yellow-sweater.jpg" class="reviews-block-image img-fluid" alt="">
+
+                                                <div class="">
+                                                    <h6 class="text-white mb-0">Sandra</h6>
+                                                    <em class="text-white"> Customers</em>
+                                                </div>
+                                            </div>
+
+                                            <div class="reviews-block-info">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                                                <div class="d-flex border-top pt-3 mt-4">
+                                                    <strong class="text-white">4.5 <small class="ms-2">Rating</small></strong>
+
+                                                    <div class="reviews-group ms-auto">
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-container timeline-container-right">
+                                    <div class="timeline-content">
+                                        <div class="reviews-block">
+                                            <div class="reviews-block-image-wrap d-flex align-items-center">
+                                                <img src="images/reviews/senior-man-white-sweater-eyeglasses.jpg" class="reviews-block-image img-fluid" alt="">
+
+                                                <div class="">
+                                                    <h6 class="text-white mb-0">Don</h6>
+                                                    <em class="text-white"> Customers</em>
+                                                </div>
+                                            </div>
+
+                                            <div class="reviews-block-info">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                                                <div class="d-flex border-top pt-3 mt-4">
+                                                    <strong class="text-white">4.5 <small class="ms-2">Rating</small></strong>
+
+                                                    <div class="reviews-group ms-auto">
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-container timeline-container-left">
+                                    <div class="timeline-content">
+                                        <div class="reviews-block">
+                                            <div class="reviews-block-image-wrap d-flex align-items-center">
+                                                <img src="images/reviews/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair.jpg" class="reviews-block-image img-fluid" alt="">
+
+                                                <div class="">
+                                                    <h6 class="text-white mb-0">Olivia</h6>
+                                                    <em class="text-white"> Customers</em>
+                                                </div>
+                                            </div>
+
+                                            <div class="reviews-block-info">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                                                <div class="d-flex border-top pt-3 mt-4">
+                                                    <strong class="text-white">4.5 <small class="ms-2">Rating</small></strong>
+
+                                                    <div class="reviews-group ms-auto">
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star-fill"></i>
+                                                        <i class="bi-star"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="contact-section section-padding" id="section_5">
+                    <div class="container">
+                        <div class="row">   
+
+                            <div class="col-lg-12 col-12">
+                                <em class="text-white">Say Hello</em>
+                                <h2 class="text-white mb-4 pb-lg-2">Contact</h2>
+                            </div>
+
+                            <div class="col-lg-6 col-12">
+                                <form action="#" method="post" class="custom-form contact-form" role="form">
+
+                                <div class="row">
+                                    
+                                    <div class="col-lg-6 col-12">
+                                        <label for="name" class="form-label">Name <sup class="text-danger">*</sup></label>
+
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Jackson" required="">
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <label for="email" class="form-label">Email Address</label>
+
+                                        <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Jack@gmail.com" required="">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="message" class="form-label">How can we help?</label>
+
+                                        <textarea name="message" rows="4" class="form-control" id="message" placeholder="Message" required=""></textarea>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 col-12 mx-auto mt-3">
+                                    <button type="submit" class="form-control">Send Message</button>
+                                </div>
+                            </form>
+                            </div>
+
+                            <div class="col-lg-6 col-12 mx-auto mt-5 mt-lg-0 ps-lg-5">
+                                <iframe class="google-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5039.668141741662!2d72.81814769288509!3d19.043340656729775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c994f34a7355%3A0x2680d63a6f7e33c2!2sLover%20Point!5e1!3m2!1sen!2sth!4v1692722771770!5m2!1sen!2sth" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>  
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+
+                <footer class="site-footer">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-4 col-12 me-auto">
+                                <em class="text-white d-block mb-4">Where to find us?</em>
+
+                                <strong class="text-white">
+                                    <i class="bi-geo-alt me-2"></i>
+                                    Bandra West, Mumbai, Maharashtra 400050, India
+                                </strong>
+
+                                <ul class="social-icon mt-4">
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link bi-facebook">
+                                        </a>
+                                    </li>
+        
+                                    <li class="social-icon-item">
+                                        <a href="https://x.com/minthu" target="_new" class="social-icon-link bi-twitter">
+                                        </a>
+                                    </li>
+
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link bi-whatsapp">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-lg-3 col-12 mt-4 mb-3 mt-lg-0 mb-lg-0">
+                                <em class="text-white d-block mb-4">Contact</em>
+
+                                <p class="d-flex mb-1">
+                                    <strong class="me-2">Phone:</strong>
+                                    <a href="tel: 305-240-9671" class="site-footer-link">
+                                        (65) 
+                                        305 2409 671
+                                    </a>
+                                </p>
+
+                                <p class="d-flex">
+                                    <strong class="me-2">Email:</strong>
+
+                                    <a href="mailto:info@yourgmail.com" class="site-footer-link">
+                                        hello@barista.co
+                                    </a>
+                                </p>
+                            </div>
+
+
+                            <div class="col-lg-5 col-12">
+                                <em class="text-white d-block mb-4">Opening Hours.</em>
+
+                                <ul class="opening-hours-list">
+                                    <li class="d-flex">
+                                        Monday - Friday
+                                        <span class="underline"></span>
+
+                                        <strong>9:00 - 18:00</strong>
+                                    </li>
+
+                                    <li class="d-flex">
+                                        Saturday
+                                        <span class="underline"></span>
+
+                                        <strong>11:00 - 16:30</strong>
+                                    </li>
+
+                                    <li class="d-flex">
+                                        Sunday
+                                        <span class="underline"></span>
+
+                                        <strong>Closed</strong>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-lg-8 col-12 mt-4">
+                                <p class="copyright-text mb-0">Copyright © Barista Cafe 2048 
+                                    - Design: <a rel="sponsored" href="https://www.tooplate.com" target="_blank">Tooplate</a></p>
+                            </div>
+                    </div>
+                </footer>
+            </main>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/click-scroll.js"></script>
+        <script src="js/vegas.min.js"></script>
+        <script src="js/custom.js"></script>
+
+    </body>
+</html>
